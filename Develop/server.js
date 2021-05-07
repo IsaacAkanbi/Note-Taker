@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const PORT = 3000;
-
+const {v4 : uuidv4} = require('uuid');
 // Create an Express Web App Instance
 const app = express();
 
@@ -28,8 +28,22 @@ app.get('/api/notes', function(req, res) {
         // - Save data in an OBJECT 
 
     // Return that data (in JSON format) to the VIEW (frontend)
+   
 
 });
+
+app.post('/api/notes', (req, res) => { 
+    const newNote = req.body;
+    const noteId = uuidv4();
+    newNote.id = noteId;
+    console.log(newNote);
+    notes.push(newNote);
+    fs.writeFile("db/db.json", JSON.stringify(notes), err => {
+      if (err) throw err; // Checking for errors
+      console.log("Done writing"); // Success
+    });
+    res.json(newNote);
+  });
 
 // Start our server
 app.listen(PORT, function() {

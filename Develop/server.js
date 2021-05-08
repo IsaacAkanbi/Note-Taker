@@ -1,6 +1,8 @@
 const express = require('express');
+const { readFileSync } = require('fs');
 const path = require('path');
 const PORT = 3000;
+const fs = require('fs');
 const {v4 : uuidv4} = require('uuid');
 // Create an Express Web App Instance
 const app = express();
@@ -13,36 +15,38 @@ app.use(express.json());
 app.use(express.static('public'));
 
 // Application Routes
-app.get('/test', function(req, res) {
-    res.send("Testing Landing route");
-})
+app.get('/', function(req, res) {
+    res.sendFile('./public/index.html');
+});
 
 app.get('/notes', function(req, res) {
-    res.sendFile(path.join(__dirname, './notes.html'))
+    res.sendFile(path.join(__dirname, './public/notes.html'));
 });
 
 app.get('/api/notes', function(req, res) {
+    const db = JSON.parse(fs.readFileSync('./db/db.json', 'utf8')) || [];
+    return res.json(db);
 
     // Get / Retrieve the data from db.json (read the data from the file - fs module)
 
         // - Save data in an OBJECT 
 
     // Return that data (in JSON format) to the VIEW (frontend)
-   
-
+  
 });
 
 app.post('/api/notes', (req, res) => { 
+    const notesArr = JSON.parse(fs.readFileSync('./db/db.json', 'utf8')) || [];
     const newNote = req.body;
     const noteId = uuidv4();
     newNote.id = noteId;
     console.log(newNote);
-    notes.push(newNote);
-    fs.writeFile("db/db.json", JSON.stringify(notes), err => {
+    notesArr.push(newNote);
+    fs.writeFile("./db/db.json", JSON.stringify(notesArr), err => {
       if (err) throw err; // Checking for errors
       console.log("Done writing"); // Success
     });
-    res.json(newNote);
+    return res.json(newNotesArr);
   });
 
 // Start our server

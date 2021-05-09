@@ -15,3 +15,7 @@ Libraries used in the development of the app includes express, fs- file system, 
 
 # Links
 
+https://isaacakanbi.github.io/Note-Taker/
+
+https://github.com/IsaacAkanbi/Note-Taker 
+

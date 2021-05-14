@@ -39,10 +39,25 @@ app.post('/api/notes', (req, res) => {
       if (err) throw err;
       console.log("Done writing"); 
     });
-    return res.json(newNotesArr);
+    return res.json(notesArr);
   });
 
-// Start our server
+app.delete('/api/notes/:id', (req, res) => { 
+    const notes = JSON.parse(fs.readFileSync('./db/db.json', 'utf8')) || [];
+    const noteId = req.params.id;
+    //console.log("delete-id : " + noteId);
+    for (let i = 0; i < notes.length; i++) {
+      if (noteId === notes[i].id) {
+        notes.splice(i,1);
+      }
+    }
+    fs.writeFile("db/db.json", JSON.stringify(notes), err => {
+      if (err) throw err;
+      console.log("Done deleting");
+    });
+    res.json(notes);
+  });
+// Start server
 app.listen(PORT, function() {
     console.log(`Server listening on port ${PORT}`);
 });

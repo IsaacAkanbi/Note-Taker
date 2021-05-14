@@ -26,10 +26,6 @@ app.get('/notes', function(req, res) {
 app.get('/api/notes', function(req, res) {
     const db = JSON.parse(fs.readFileSync('./db/db.json', 'utf8')) || [];
     return res.json(db);
-
-    // Get / Retrieve the data from db.json (read the data from the file - fs module)
-    // -Save data in an OBJECT 
-    // Return that data (in JSON format) to the VIEW (frontend)
 });
 
 app.post('/api/notes', (req, res) => { 
@@ -40,8 +36,8 @@ app.post('/api/notes', (req, res) => {
     console.log(newNote);
     notesArr.push(newNote);
     fs.writeFile("./db/db.json", JSON.stringify(notesArr), err => {
-      if (err) throw err; // Checking for errors
-      console.log("Done writing"); // Success
+      if (err) throw err;
+      console.log("Done writing"); 
     });
     return res.json(newNotesArr);
   });
